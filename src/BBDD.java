@@ -91,4 +91,29 @@ public class BBDD {
 
         return nombre;
     }
+
+    public static String comprobarSaldo(String dni) {
+        String nombre = null;
+        String sql = "SELECT saldo FROM usuarios WHERE dni = ?";
+
+        try (Connection conn = BBDD.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Establecer el valor del DNI en el PreparedStatement
+            pstmt.setString(1, dni);
+
+            // Ejecutar la consulta y obtener los resultados
+            ResultSet rs = pstmt.executeQuery();
+
+            // Si encontramos un usuario con ese DNI, obtenemos su nombre
+            if (rs.next()) {
+                nombre = rs.getString("saldo");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error consultando el DNI: " + e.getMessage());
+        }
+
+        return nombre;
+    }
 }

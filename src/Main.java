@@ -112,15 +112,53 @@ public class Main {
                     System.exit(0);
                     break;
                 case 1:
-                    iniciaSesion();
+                    hacerIngreso();
                     break;
                 case 2:
-                    registrarse();
+                    hacerGasto();
                     break;
                 default:
                     System.out.println("ELECCION NO VALIDA");
             }
         }
+    }
+
+    public static void hacerIngreso(){
+        Scanner in = new Scanner(System.in);
+
+        while(eleccion != 0){
+
+            System.out.println("Que tipo de Ingreso desea realizar?");
+
+            System.out.println("""
+                      ╔═════════════════════════════════════════╗
+                      ║  1. Ingresar Nomina                     ║
+                      ║  2. Ingresar Ventas de Segunda Mano     ║
+                      ║  0. Salir                               ║
+                      ╚═════════════════════════════════════════╝
+                """);
+
+            eleccion = in.nextInt();
+
+            switch (eleccion){
+                case 0:
+                    System.out.println("VOLVIENDO");
+                    System.exit(0);
+                    break;
+                case 1:
+                    System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+
+                    break;
+                case 2:
+                    hacerGasto();
+                    break;
+                default:
+                    System.out.println("ELECCION NO VALIDA");
+            }
+        }
+    }
+
+    public static void hacerGasto(){
 
     }
 }
