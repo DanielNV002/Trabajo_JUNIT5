@@ -57,7 +57,7 @@ public class BBDD {
 
             // Comprobar si se actualizó algún registro
             if (rowsAffected > 0) {
-                System.out.println("Saldo actualizado correctamente para el usuario con DNI: " + dni);
+                System.out.println("Saldo actualizado correctamente");
             } else {
                 System.out.println("No se encontró un usuario con el DNI: " + dni);
             }
@@ -67,7 +67,7 @@ public class BBDD {
     }
 
     // Metodo para comprobar el DNI y obtener el nombre
-    public static String comprobarDNI(String dni) {
+    public static String comprobarDNINombre(String dni) {
         String nombre = null;
         String sql = "SELECT nombre FROM usuarios WHERE dni = ?";
 
@@ -83,6 +83,32 @@ public class BBDD {
             // Si encontramos un usuario con ese DNI, obtenemos su nombre
             if (rs.next()) {
                 nombre = rs.getString("nombre");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error consultando el DNI: " + e.getMessage());
+        }
+
+        return nombre;
+    }
+
+    // Metodo para comprobar el DNI y obtener el nombre
+    public static String comprobarDNI(String dni) {
+        String nombre = null;
+        String sql = "SELECT dni FROM usuarios WHERE dni = ?";
+
+        try (Connection conn = BBDD.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Establecer el valor del DNI en el PreparedStatement
+            pstmt.setString(1, dni);
+
+            // Ejecutar la consulta y obtener los resultados
+            ResultSet rs = pstmt.executeQuery();
+
+            // Si encontramos un usuario con ese DNI, obtenemos su nombre
+            if (rs.next()) {
+                nombre = rs.getString("dni");
             }
 
         } catch (SQLException e) {

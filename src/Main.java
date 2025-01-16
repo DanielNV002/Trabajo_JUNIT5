@@ -63,7 +63,7 @@ public class Main {
         dni = in.next();
 
         // Comprobar si el DNI está registrado en la base de datos
-        nombre = BBDD.comprobarDNI(dni);
+        nombre = BBDD.comprobarDNINombre(dni);
 
         if (nombre != null) {
             System.out.println("Bienvenido " + nombre);
@@ -86,9 +86,12 @@ public class Main {
         System.out.print("INTRODUCE TU Saldo: ");
         saldo = in.nextDouble();
 
-        BBDD.insertData(dni,nombre,saldo);
-
-        System.out.println("USUARIO " + nombre + " REGISTRADO CORRECTAMENTE");
+        if(BBDD.comprobarDNI(dni).equalsIgnoreCase(dni)){
+            System.out.println("DNI O USUARIO EXISTENTE");
+        }else{
+            BBDD.insertData(dni,nombre,saldo);
+            System.out.println("USUARIO " + nombre + " REGISTRADO CORRECTAMENTE");
+        }
     }
 
     public static void mainScreen(){
@@ -126,6 +129,8 @@ public class Main {
     public static void hacerIngreso(){
         Scanner in = new Scanner(System.in);
 
+        double nomina = 0;
+
         while(eleccion != 0){
 
             System.out.println("Que tipo de Ingreso desea realizar?");
@@ -147,10 +152,14 @@ public class Main {
                     break;
                 case 1:
                     System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
-
+                    System.out.print("Ingrese su Nomina: ");
+                    nomina = in.nextDouble();
+                    saldo = saldo + (nomina - (nomina * 0.15) );
+                    BBDD.updateSaldo(dni, saldo);
+                    System.out.println("Su saldo es de " + saldo);
                     break;
                 case 2:
-                    hacerGasto();
+                    System.out.println("Ingreso Ventas Segunda Mano");
                     break;
                 default:
                     System.out.println("ELECCION NO VALIDA");
