@@ -111,10 +111,13 @@ public class BBDD {
                 nombre = rs.getString("dni");
             }
 
+            if (nombre == null) {
+                return nombre = ""; // O puedes devolver "NO_ENCONTRADO" o cualquier valor que prefieras.
+            }
+
         } catch (SQLException e) {
             System.out.println("Error consultando el DNI: " + e.getMessage());
         }
-
         return nombre;
     }
 

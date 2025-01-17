@@ -1,65 +1,39 @@
 public class ComprobarDNI {
+    private int dni;
+    private String dniDado;
+    private char letraDNI;
+    private boolean validado = false;
+    private static final String LETRAS = "TRWAGMYFPDXBNJZSQVHLCKE"; // Letras asociadas a cada número del DNI
 
-    int dni = 0;
-    String letra = "TRWAGMYFPDXBNJZSQVHLCKE";
-    char letraDNI = ' ';
-    String dniDado = "";
-    boolean validado = false;
-
-    public ComprobarDNI(String dni){
+    public ComprobarDNI(String dni) {
         this.dniDado = dni;
-        this.dni = Integer.parseInt(dni.substring(0,8));
-        comprobarLetra(this.dni);
+
+        // Validar formato del DNI (8 dígitos seguidos de una letra)
+        if (dni.length() != 9 || !dni.substring(0, 8).matches("\\d{8}") || !Character.isLetter(dni.charAt(8))) {
+            validado = false;
+            System.out.println("El DNI tiene un formato incorrecto.");
+            return;
+        }
+
+        this.dni = Integer.parseInt(dni.substring(0, 8)); // Extraer el número de DNI
+        comprobarLetra(this.dni, dni.charAt(8)); // Comprobar si la letra es correcta
     }
 
-    public void comprobarLetra(int dni){
-        letraDNI = letra.charAt(dni%23);
-        //System.out.println(letraDNI);
+    // Método para comprobar la letra del DNI
+    private void comprobarLetra(int dni, char letraDada) {
+        letraDNI = LETRAS.charAt(dni % 23); // Calcular la letra correcta
 
-        if(letraDNI == dniDado.charAt(8)){
+        // Comprobar si la letra dada es la correcta
+        if (letraDNI == letraDada) {
             validado = true;
-        }else{
+        } else {
             validado = false;
+            System.out.println("La letra del DNI es incorrecta.");
         }
     }
 
-    public int getDni() {
-        return dni;
-    }
-
-    public void setDni(int dni) {
-        this.dni = dni;
-    }
-
-    public String getLetra() {
-        return letra;
-    }
-
-    public void setLetra(String letra) {
-        this.letra = letra;
-    }
-
-    public char getLetraDNI() {
-        return letraDNI;
-    }
-
-    public void setLetraDNI(char letraDNI) {
-        this.letraDNI = letraDNI;
-    }
-
-    public String getDniDado() {
-        return dniDado;
-    }
-
-    public void setDniDado(String dniDado) {
-        this.dniDado = dniDado;
-    }
-
-    public boolean isValidado() {
+    // Método para saber si el DNI es válido
+    public boolean esValido() {
         return validado;
-    }
-
-    public void setValidado(boolean validado) {
-        this.validado = validado;
     }
 }
