@@ -37,9 +37,11 @@ public class Main {
                         break;
                     case 1:
                         iniciaSesion();
+                        eleccion = 100;
                         break;
                     case 2:
                         registrarse();
+                        eleccion = 100;
                         break;
                     default:
                         System.out.println("ELECCION NO VALIDA");
@@ -112,13 +114,14 @@ public class Main {
             switch (eleccion){
                 case 0:
                     System.out.println("VOLVIENDO");
-                    System.exit(0);
                     break;
                 case 1:
                     hacerIngreso();
+                    eleccion = 100;
                     break;
                 case 2:
                     hacerGasto();
+                    eleccion = 100;
                     break;
                 default:
                     System.out.println("ELECCION NO VALIDA");
@@ -129,7 +132,8 @@ public class Main {
     public static void hacerIngreso(){
         Scanner in = new Scanner(System.in);
 
-        double nomina = 0;
+        double cantidad = 0;
+        saldo = BBDD.comprobarSaldo(dni);
 
         while(eleccion != 0){
 
@@ -148,18 +152,22 @@ public class Main {
             switch (eleccion){
                 case 0:
                     System.out.println("VOLVIENDO");
-                    System.exit(0);
                     break;
                 case 1:
                     System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
                     System.out.print("Ingrese su Nomina: ");
-                    nomina = in.nextDouble();
-                    saldo = saldo + (nomina - (nomina * 0.15) );
+                    cantidad = in.nextDouble();
+                    saldo = saldo + (cantidad - (cantidad * 0.15) );
                     BBDD.updateSaldo(dni, saldo);
                     System.out.println("Su saldo es de " + saldo);
                     break;
                 case 2:
-                    System.out.println("Ingreso Ventas Segunda Mano");
+                    System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+                    System.out.print("Ingrese la cantidad: ");
+                    cantidad = in.nextDouble();
+                    saldo = saldo + cantidad;
+                    BBDD.updateSaldo(dni, saldo);
+                    System.out.println("Su saldo es de " + saldo);
                     break;
                 default:
                     System.out.println("ELECCION NO VALIDA");
@@ -168,6 +176,54 @@ public class Main {
     }
 
     public static void hacerGasto(){
+        Scanner in = new Scanner(System.in);
 
+        double cantidad = 0;
+        saldo = BBDD.comprobarSaldo(dni);
+
+        while(eleccion != 0){
+
+            System.out.println("Que tipo de Gasto desea realizar?");
+
+            System.out.println("""
+                      ╔═════════════════════════════════════════╗
+                      ║  1. Vacaciones                          ║
+                      ║  2. Alquiler                            ║
+                      ║  3. Vicios varios                       ║
+                      ║  0. Salir                               ║
+                      ╚═════════════════════════════════════════╝
+                """);
+
+            eleccion = in.nextInt();
+
+            switch (eleccion){
+                case 0:
+                    System.out.println("VOLVIENDO");
+                    break;
+                case 1:
+                    System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+                    System.out.println("Ingrese cuanto va a gastar en vacaciones: ");
+                    cantidad = in.nextDouble();
+                    if(cantidad > BBDD.comprobarSaldo(dni)){
+                        System.out.println("SALDO INFERIOR AL GASTO");
+                        break;
+                    }else{
+                        saldo = saldo - cantidad;
+                        BBDD.updateSaldo(dni, saldo);
+                        System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+                        break;
+                    }
+                case 2:
+                    System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+
+                    break;
+                case 3:
+                    System.out.println("Su saldo es de " + BBDD.comprobarSaldo(dni));
+
+                    break;
+                default:
+                    System.out.println("ELECCION NO VALIDA");
+            }
+        }
     }
 }

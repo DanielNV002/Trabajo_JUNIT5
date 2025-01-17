@@ -118,8 +118,8 @@ public class BBDD {
         return nombre;
     }
 
-    public static String comprobarSaldo(String dni) {
-        String nombre = null;
+    public static Double comprobarSaldo(String dni) {
+        Double saldo = null;
         String sql = "SELECT saldo FROM usuarios WHERE dni = ?";
 
         try (Connection conn = BBDD.connect();
@@ -133,13 +133,13 @@ public class BBDD {
 
             // Si encontramos un usuario con ese DNI, obtenemos su nombre
             if (rs.next()) {
-                nombre = rs.getString("saldo");
+                saldo = rs.getDouble("saldo");
             }
 
         } catch (SQLException e) {
             System.out.println("Error consultando el DNI: " + e.getMessage());
         }
 
-        return nombre;
+        return saldo;
     }
 }
